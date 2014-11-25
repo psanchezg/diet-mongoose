@@ -31,6 +31,12 @@
     "email": "mail@adamhalasz.com",
     "url": "http://adamhalasz.com/"
   },
+  "contributors": [
+    {
+      "name": "Pablo Sánchez",
+      "email": "psanchezg@gmail.com"
+    }
+  ],
   "main": "index.js",
   "engines": {
     "node": ">=0.8.21"

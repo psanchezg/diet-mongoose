@@ -20,23 +20,26 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-var app = module.parent.app;
-var mongoose = inputOptions.module || require('mongoose');
-var inputOptions = module.parent.options || {};
-var options = {
-	database : inputOptions.database || 'test',
-	port	 : inputOptions.port 	|| '27017',
-	host	 : inputOptions.host 	|| 'localhost',
-	protocol : inputOptions.protocol || 'mongodb'
-}
+/*jslint node: true */
+'use strict';
 
-mongoose.connect(options.protocol 
-	+ '://'+ options.host 
-	+ ':'  + options.port 
-	+ '/'  + options.database);
+var app = module.parent.app;
+var inputOptions = module.parent.options || {};
+var mongoose = inputOptions.module || require('mongoose');
+var options = {
+	database : inputOptions.database  || 'test',
+	port	 : inputOptions.port      || '27017',
+	host	 : inputOptions.host      || 'localhost',
+	protocol : inputOptions.protocol  || 'mongodb'
+};
+
+mongoose.connect(options.protocol +
+	'://' + options.host +
+	':'  + options.port +
+	'/'  + options.database);
 
 var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', app);
+db.on('error', console.error.bind(console, 'mongodb connection error:'));
+db.once('open', options.callback || console.error.bind(console, 'connected to mongodb'));
 
-module.parent.return(mongoose);
+module.parent['return'](mongoose);
