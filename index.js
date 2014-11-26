@@ -24,14 +24,12 @@ THE SOFTWARE.
 'use strict';
 
 var app = module.parent.app;
-var inputOptions = module.parent.options || {};
-var mongoose = inputOptions.module || require('mongoose');
-var options = {
-	database : inputOptions.database  || 'test',
-	port	 : inputOptions.port      || '27017',
-	host	 : inputOptions.host      || 'localhost',
-	protocol : inputOptions.protocol  || 'mongodb'
-};
+var options = module.parent.options || {};
+var mongoose = options.module || require('mongoose');
+options.database  = options.database  || 'test';
+options.port      = options.port      || '27017';
+options.host      = options.host      || 'localhost';
+options.protocol  = options.protocol  || 'mongodb';
 
 mongoose.connect(options.protocol +
 	'://' + options.host +
@@ -39,7 +37,7 @@ mongoose.connect(options.protocol +
 	'/'  + options.database);
 
 var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'mongodb connection error:'));
-db.once('open', options.callback || console.error.bind(console, 'connected to mongodb'));
+db.on('error', options.error || console.error.bind(console, 'Error connecting to database (mongodb).'));
+db.once('open', options.sucess || console.error.bind(console, 'Connected to database (mongodb)'));
 
 module.parent['return'](mongoose);
